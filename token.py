@@ -31,8 +31,8 @@ class Document():
     def createTokens(self, words):
         offset = 0
         for i, w in enumerate(words):
-            index = self.text[offset:len(w)].find(w)
-            self.tokens[i] = Token(offset, offset + len(w))
+            index = self.text[offset:].find(w)
+            self.tokens[i] = Token(index, index + len(w))
             offset = index + len(w)
 
 if __name__ == "__main__":
