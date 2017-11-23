@@ -15,6 +15,9 @@ class Document:
         self.tokens = None
         self.sentences = None
 
+    def __len__(self):
+        return len(self.tokens)
+
     @classmethod
     def create_from_text(cls, text: str = None):
         """
@@ -32,9 +35,8 @@ class Document:
         #    print("{} -> {}".format(w, pos_tags[i]))
         # 3. Trouver les intervalles de Tokens
         doc.tokens = Document._find_tokens(doc, words, pos_tags, text)
-
         # 4. Trouver les intervalles de phrases
-        # doc.sentences = Document._find_sentences(text)
+        doc.sentences = Document._find_sentences(text, sentences)
 
         return doc
 
@@ -119,16 +121,24 @@ class Document:
             position = text.find(token, offset, offset + max(len(token), 50))
             if position > -1:
                 if missing:
-                    return True
+                    continue
                 else:
-                    size = position + len(token)
-                    tokens.append(Token(document = doc, start = position, end = int(size), pos = pos_tag))
-                    offset += size
+                    tokens.append(Token(document = doc, start = position, end = position + len(token),shape="",text=token, pos = pos_tag))
+                    offset = position + len(token)
             else:
-                return True
+                continue
+        return tokens
 
     @staticmethod
-    def _find_sentences(doc_text: str):
+    def _find_sentences(doc_text: str, sentences):
         """ yield Sentence objects each time a sentence is found in the text """
-
-        # TODO: To be implemented
+        offset = 0
+        inter = list()
+        for sentence in sentences:
+            position = doc_text.find(sentence, offset)
+            if position > -1:
+                inter.append(Interval(start=position, end=position + len(sentence)))
+                offset = position + len(sentence)
+            else:
+                continue
+        return inter
