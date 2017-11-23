@@ -12,4 +12,4 @@ class Parser(object):
 
 class simpleTextParser(Parser):
     def read(self, content: str) -> Document:
-        return Document.Document().create_from_text(content)
+        return Document().create_from_text(content)

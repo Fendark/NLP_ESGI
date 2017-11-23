@@ -16,22 +16,29 @@ if __name__ == "__main__":
     training_set_path = "dataset/"
     train_set = open(os.path.join(training_set_path, training_set_filename), "r")
     train_set_content = train_set.read()
-    word_list = list()
-    sentences_list = list()
     source_file = train_set_content.split("-DOCSTART- -X- O O")[:200]
-    offset = 0
+    documentList = list()
     for doc in source_file:
-        for sentence in doc.split("\n\n"):
-            # print(sentence + " ||||")
+        if doc == '':
+            continue
+        word_list = list()
+        label_list = list()
+        sentences_list = list()
+        offset = 0
+        for sentence in doc.strip().split("\n\n"):
+            #print(sentence + " ||||")
             start = offset
-            if sentence == "":
+            if sentence == '':
+                continue
+            for line in sentence.split("\n"):
+                w = line.split(" ")
                 offset += 1
-            else:
-                for line in sentence.split("\n"):
-                    for w in line.split(" ")[0]:
-                        offset += len(w.strip())
-                        word_list.append(w)
-                    print(line)
+                word_list.append(w[0].strip())
+                label_list.append(w[-1])
             sentences_list.append(Interval(start, offset))
+            offset += 1
+        documentList.append(Document().create_from_vectors(word_list, sentences_list, label_list))
 
+    #print(testDocument.sentences)
     train_set.close()
+    print("Finished")
