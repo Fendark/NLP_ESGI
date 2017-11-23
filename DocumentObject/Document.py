@@ -1,6 +1,7 @@
 import nltk
 from typing import List
 from DocumentObject import Token
+from DocumentObject import Interval
 import re
 
 
@@ -36,6 +37,47 @@ class Document:
         # doc.sentences = Document._find_sentences(text)
 
         return doc
+
+    @classmethod
+    def create_from_vectors(cls, words: List[str], sentences: List[Interval], labels: List[str] = None):
+        doc = Document()
+        text = []
+        offset = 0
+        doc.sentences = []
+        for sentence in sentences:
+            text.append(' '.join(words[sentence.start:sentence.end + 1]) + ' ')
+            doc.sentences.append(Interval(offset, offset + len(text[-1])))
+            offset += len(text[-1])
+        doc.text = ''.join(text)
+
+        offset = 0
+        doc.tokens = []
+        for word_pos, label in zip(nltk.pos_tag(words), labels):
+            word = word_pos[0]
+            pos_tag = word_pos[1]
+            pos = doc.text.find(word, offset)
+            if pos >= 0:
+                offset = pos + len(word)
+                doc.tokens.append(Token(doc, pos, offset, pos_tag, Document.get_shape_category(word), word, label=label))
+        return doc
+
+    @staticmethod
+    def get_shape_category(token: str):
+        if re.match('^[\n]+$', token):  # IS LINE BREAK
+            return 'NL'
+        if any(char.isdigit() for char in token) and re.match('^[0-9.,]+$', token):  # IS NUMBER (E.G., 2, 2.000)
+            return 'NUMBER'
+        if re.fullmatch('[^A-Za-z0-9\t\n ]+', token):  # IS SPECIAL CHARS (E.G., $, #, ., *)
+            return 'SPECIAL'
+        if re.fullmatch('^[A-Z\-.]+$', token):  # IS UPPERCASE (E.G., AGREEMENT, INC.)
+            return 'ALL-CAPS'
+        if re.fullmatch('^[A-Z][a-z\-.]+$', token):  # FIRST LETTER UPPERCASE (E.G. This, Agreement)
+            return '1ST-CAP'
+        if re.fullmatch('^[a-z\-.]+$', token):  # IS LOWERCASE (E.G., may, third-party)
+            return 'LOWER'
+        if not token.isupper() and not token.islower():  # WEIRD CASE (E.G., 3RD, E2, iPhone)
+            return 'MISC'
+        return 'MISC'
 
     @staticmethod
     def _retokenize(word_tokens: List[str], pos_tags: List[str]):
@@ -80,7 +122,7 @@ class Document:
                     return True
                 else:
                     size = position + len(token)
-                    tokens.append(Token.Token(document = doc, start = position, end = int(size), pos = pos_tag))
+                    tokens.append(Token(document = doc, start = position, end = int(size), pos = pos_tag))
                     offset += size
             else:
                 return True

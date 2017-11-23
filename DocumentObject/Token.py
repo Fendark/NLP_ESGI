@@ -2,7 +2,7 @@ from DocumentObject.Interval import Interval
 
 
 class Token(Interval):
-    def __init__(self, document, start: int, end: int, pos: str = None, shape: int = None, text: str = None):
+    def __init__(self, document, start: int, end: int, pos: str = None, shape: str = None, text: str = None, label: str = None):
         Interval.__init__(self, start, end)
         self._doc = document
         self._pos = pos
