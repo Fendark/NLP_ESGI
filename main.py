@@ -21,16 +21,16 @@ if __name__ == "__main__":
     source_file = train_set_content.split("-DOCSTART- -X- O O")[:200]
     offset = 0
     for doc in source_file:
-        for sentence in doc.split("\n\n"):
+        for sentence in doc.strip().split("\n\n"):
             #print(sentence + " ||||")
             start = offset
-            if sentence == "":
-                offset += 1
-            else:
+            if sentence != "" or sentence != "\n":
                 for line in sentence.split("\n"):
                     for w in line.split(" ")[0]:
                         offset += len(w.strip())
-                        word_list.append(w)
-            sentences_list.append(Interval(start, offset))
+                        word_list.append(w.strip())
+                sentences_list.append(Interval(start, offset))
+            offset += 1
 
     train_set.close()
+
