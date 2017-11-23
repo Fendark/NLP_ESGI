@@ -22,7 +22,7 @@ if __name__ == "__main__":
     offset = 0
     for doc in source_file:
         for sentence in doc.split("\n\n"):
-            #print(sentence + " ||||")
+            # print(sentence + " ||||")
             start = offset
             if sentence == "":
                 offset += 1
@@ -31,6 +31,7 @@ if __name__ == "__main__":
                     for w in line.split(" ")[0]:
                         offset += len(w.strip())
                         word_list.append(w)
+                    print(line)
             sentences_list.append(Interval(start, offset))
 
     train_set.close()
