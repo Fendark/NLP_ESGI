@@ -1,5 +1,5 @@
 import unittest
-#import Interval
+from DocumentObject import Interval
 
 class IntervalTest(unittest.TestCase):
 

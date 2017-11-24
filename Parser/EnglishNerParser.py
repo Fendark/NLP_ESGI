@@ -1,1 +1,0 @@
-class EnglishNearParser(Parser):
