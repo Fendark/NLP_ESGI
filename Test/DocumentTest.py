@@ -1,4 +1,5 @@
-from DocumentObject.Document import *
+from DocumentObject import Document
+import unittest
 
 class DocumentTest(unittest.TestCase):
 
@@ -11,3 +12,6 @@ class DocumentTest(unittest.TestCase):
 
         self.assertEqual(len(doc.tokens), 46, 'ERROR : tokens')
         self.assertEquals(len(doc.sentences), 4, 'ERROR : sentences')
+
+if __name__ == "__main__":
+    unittest.main()
