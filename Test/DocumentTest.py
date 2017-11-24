@@ -1,4 +1,3 @@
-import unittest
 from DocumentObject.Document import *
 
 class DocumentTest(unittest.TestCase):

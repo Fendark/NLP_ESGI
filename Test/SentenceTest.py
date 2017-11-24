@@ -1,5 +1,5 @@
 import unittest
-#import Document
+from DocumentObject import Sentence
 
 class DocumentTest(unittest.TestCase):
 
