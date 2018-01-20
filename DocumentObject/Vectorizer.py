@@ -42,6 +42,10 @@ class Vectorizer:
         #           Append to sentence
         #   append to sentences
         # return word, pos, shape
+        for doc in documents:
+            for sen in doc.sentences:
+                for tok in sen._tokens:
+                    print(tok)
 
     def encode_annotations(self, documents: List[Document]):
         """
@@ -55,3 +59,7 @@ class Vectorizer:
         #           Convert label to numerical representation
         #           Append to sentence
         # return labels
+        for doc in documents:
+            for sen in doc.sentences:
+                for tok in sen._tokens:
+                    print(tok)
