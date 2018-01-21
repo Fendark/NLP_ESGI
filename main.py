@@ -11,12 +11,14 @@ if __name__ == "__main__":
     training_set_filename = "eng.train.txt"
     training_set_path = "dataset/"
     filename = os.path.join(training_set_path, training_set_filename)
+    file = open(filename,"r")
     print("Document to parse: {}".format(filename))
     print("Initiate Parser...")
     file_parser = EnglishNerParser()
     print("Parser: OK")
     print("Parsing Document...")
-    documents_list = file_parser.read(filename)
+    documents_list = file_parser.read(file.read())
+    file.close()
     print('Create features')
     vectorizer = Vectorizer(word_embedding_path='External/glove.6B.50d.w2v.txt')
     features = vectorizer.encode_features(documents_list)

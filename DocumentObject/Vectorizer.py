@@ -1,6 +1,7 @@
 from gensim.models import KeyedVectors
 from typing import List
 from DocumentObject import Document
+import numpy as np
 
 
 class Vectorizer:
@@ -39,12 +40,21 @@ class Vectorizer:
         #   append to sentences
         # return word, pos, shape
         features = list()
-        print(len(documents))
+        words = np.array([])
+        pos = np.array([])
+        shape = np.array([])
         for doc in documents:
-            print(len(doc.sentences))
             for sen in doc.sentences:
                 for tok in sen.tokens:
-                    features.append(tok._text)
+                    if tok._text in self.word_embeddings.vocab:
+                        np.append(words, self.word_embeddings[tok._text.lower()])
+                    else:
+                        np.append(words, self.word_embeddings["date"])
+                    np.append(pos, self.pos2index[tok._pos])
+                    np.append(shape, [self.shape2index[tok._shape]])
+        features.append(words)
+        features.append(pos)
+        features.append(shape)
         return features
 
     def encode_annotations(self, documents: List[Document]):
@@ -59,7 +69,15 @@ class Vectorizer:
         #           Convert label to numerical representation
         #           Append to sentence
         # return labels
+        labels = np.array([])
         for doc in documents:
             for sen in doc.sentences:
-                for tok in sen._tokens:
-                    print(tok)
+                sentence_vec = list()
+                for tok in sen.tokens:
+                    if(tok._label in self.labels2index):
+                        index = self.labels2index[tok._label]
+                    else:
+                        index = 5
+                    sentence_vec.append(index)
+                np.append(labels, sentence_vec)
+        return labels
