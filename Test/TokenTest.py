@@ -5,18 +5,13 @@ import unittest
 class TokenTest(unittest.TestCase):
 
     def test_sample(self):
-        text = "Hello, I am a jolly platypus. " \
-               "I like to run and roll on tremendous hills. " \
-               "I do love to run and roll, but i like to sing too! " \
-               "So the jolly platypus ran, rolled and sung on tremendous hills. "
-        doc = Document.create_from_text(text)
 
-        token = Token(doc,)
-
-        token.__repr__()
-
-        #self.assertEqual(len(doc.tokens), 46, 'ERROR : tokens')
-        #self.assertEqual(len(doc.sentences), 4, 'ERROR : sentences')
+        token = Token("Hello", 0, 4, "NNP", Document.get_shape_category("Hello"), "Hello")
+        self.assertEqual(token._doc, "Hello", 'ERROR : TOKEN_DOC')
+        self.assertEqual(token._pos, "NNP", 'ERROR : TOKEN_POSTAG')
+        self.assertEqual(token._shape, "1ST-CAP", 'ERROR : TOKEN_SHAPE')
+        self.assertEqual(token._text, "Hello", 'ERROR : TOKEN_text')
+        self.assertEqual(token._label, None, 'ERROR : TOKEN_label')
 
 if __name__ == "__main__":
     unittest.main()
