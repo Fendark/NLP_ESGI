@@ -10,7 +10,6 @@ class Vectorizer:
         """
         :param word_embedding_path: path to gensim embedding file
         """
-        # self.word_embeddings = KeyedVectors.load_word2vec_format("D:/Project/nlp/NLP_ESGI/External/glove.6B.50d.w2v.txt")
         self.word_embeddings = KeyedVectors.load_word2vec_format(word_embedding_path, binary=False)
         self.pos2index = {'$': 0, '\'\'': 1, '(': 2, ')': 3, ',': 4, '--': 5, '.': 6, ':': 7, 'CC': 8, 'CD': 9,
                           'DT': 10, 'EX': 11, 'FW': 12, 'IN': 13, 'JJ': 14, 'JJR': 15,
@@ -23,10 +22,7 @@ class Vectorizer:
         self.labels = ['O', 'PER', 'LOC', 'ORG', 'MISC']
         self.labels2index = {'O': 0, 'PER': 1, 'I-PER': 1, 'B-PER': 1, 'LOC': 2, 'I-LOC': 2, 'B-LOc': 2, 'ORG': 3,
                              'I-ORG': 3, 'B-ORG': 3, 'MISC': 4, 'I-MISC': 4, 'B-MISC': 4}
-        # Load word embeddings from file
-        # Create POS to index dictionary
-        # Create shape to index dictionary
-        # Create labels to index
+
 
     def encode_features(self, documents: List[Document]):
         """
@@ -42,9 +38,11 @@ class Vectorizer:
         #           Append to sentence
         #   append to sentences
         # return word, pos, shape
+        print(len(documents))
         for doc in documents:
+            print(len(doc.sentences))
             for sen in doc.sentences:
-                for tok in sen._tokens:
+                for tok in sen.tokens:
                     print(tok)
 
     def encode_annotations(self, documents: List[Document]):

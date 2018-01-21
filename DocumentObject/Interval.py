@@ -17,6 +17,9 @@ class Interval(object):
     def __contains__(self, item: int) -> bool:
         return self.start <= item < self.end
 
+    def __lt__(self, other):
+        return (self.start, -len(self)) < (other.start, -len(other))
+
     def __repr__(self) -> str:
         return 'Interval[{}, {}]'.format(self.start, self.end)
 

@@ -9,3 +9,11 @@ class Sentence(Interval):
 
     def __repr__(self):
         return 'Sentence({}, {})'.format(self.start, self.end)
+
+    @property
+    def tokens(self):
+        tokens = list()
+        for t in self._doc.tokens:
+            if(self.overlaps(t)):
+                tokens.append(t)
+        return tokens

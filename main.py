@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print("Parsing Document...")
     documents_list = file_parser.read(filename)
     print('Create features')
-    vectorizer = Vectorizer(word_embedding_path='/Path/to/embeddings file')
+    vectorizer = Vectorizer(word_embedding_path='External/glove.6B.50d.w2v.txt')
     features = vectorizer.encode_features(documents_list)
     labels = vectorizer.encode_annotations(documents_list)
     print('Loaded {} data samples'.format(len(features)))
