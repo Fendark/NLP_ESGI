@@ -11,4 +11,5 @@ class SentenceTest(unittest.TestCase):
                "So the jolly platypus ran, rolled and sung on tremendous hills. "
         doc = Document.create_from_text(text)
 
-        sentence = Sentence(doc,0,100)
+        self.assertTrue(Sentence(doc,0,100))
+        self.assertRaises(ValueError,Sentence.__init__,self,doc,1,0)
