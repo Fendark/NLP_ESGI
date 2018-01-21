@@ -25,10 +25,11 @@ if __name__ == "__main__":
 
     print('Split training/validation')
     max_length = 60
-    split_percent = numpy.ceil(features.length * 0.7)
+    split_percent = int(numpy.ceil(len(features) * 0.7))
+    print("Split index = {}".format(split_percent))
     # --------------- Features ----------------
-    x_train = features.splice(0, split_percent)
-    x_validation = features
+    x_train = features[:split_percent]
+    x_validation = features[split_percent:]
     x_train = sequence.pad_sequences(x_train, maxlen=max_length)
     x_validation = sequence.pad_sequences(x_validation, maxlen=max_length)
 

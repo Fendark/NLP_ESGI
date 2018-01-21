@@ -38,12 +38,14 @@ class Vectorizer:
         #           Append to sentence
         #   append to sentences
         # return word, pos, shape
+        features = list()
         print(len(documents))
         for doc in documents:
             print(len(doc.sentences))
             for sen in doc.sentences:
                 for tok in sen.tokens:
-                    print(tok)
+                    features.append(tok._text)
+        return features
 
     def encode_annotations(self, documents: List[Document]):
         """
