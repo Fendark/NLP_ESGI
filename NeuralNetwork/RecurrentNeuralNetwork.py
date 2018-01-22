@@ -50,11 +50,11 @@ class RecurrentNeuralNetwork():
                                      mask_zero=True)(shape_input)
 
         merged_input = concatenate([word_embeddings, pos_embeddings, shape_embeddings], axis=-1)
-        bilstm = Bidirectional(LSTM(units, activation='tanh', return_sequences=True), name='bi-lstm')(word_embeddings)
+        bilstm = Bidirectional(LSTM(units, activation='tanh', return_sequences=True), name='bi-lstm')(merged_input)
         lstm = LSTM(units, activation='tanh', name='lstm', return_sequences=True)(bilstm)
         lstm = Dropout(dropout_rate, name='second_dropout')(lstm)
         output = TimeDistributed(Dense(out_shape, activation='softmax'))(lstm)
-        model = Model(inputs=[word_input], outputs=output)
+        model = Model(inputs=[word_input,pos_input, shape_input], outputs=output)
         model.compile(optimizer='adam',
                       loss='binary_crossentropy',
                       metrics=['accuracy'])

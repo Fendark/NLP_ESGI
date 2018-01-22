@@ -54,7 +54,8 @@ class Vectorizer:
                     words.append(i)
                     pos.append(self.pos2index[tok._pos])
                     shape.append(self.shape2index[tok._shape])
-        return np.array([words, pos, shape])
+        #return np.array([words, pos, shape])
+        return words,pos,shape
 
     def encode_annotations(self, documents: List[Document]):
         """
