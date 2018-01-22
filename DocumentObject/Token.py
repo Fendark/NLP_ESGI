@@ -9,6 +9,7 @@ class Token(Interval):
         self._shape = shape
         self._text = text
         self._label = label
+
     def __getitem__(self, item):
         return None
 

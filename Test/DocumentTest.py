@@ -11,7 +11,7 @@ class DocumentTest(unittest.TestCase):
         doc = Document.create_from_text(text)
 
         self.assertEqual(len(doc.tokens), 46, 'ERROR : tokens')
-        self.assertEquals(len(doc.sentences), 4, 'ERROR : sentences')
+        self.assertEqual(len(doc.sentences), 4, 'ERROR : sentences')
 
 if __name__ == "__main__":
     unittest.main()
