@@ -39,23 +39,22 @@ class Vectorizer:
         #           Append to sentence
         #   append to sentences
         # return word, pos, shape
-        features = list()
-        words = np.array([])
-        pos = np.array([])
-        shape = np.array([])
+        words = list()
+        pos = list()
+        shape = list()
         for doc in documents:
             for sen in doc.sentences:
-                for tok in sen.tokens:
-                    if tok._text in self.word_embeddings.vocab:
-                        np.append(words, self.word_embeddings[tok._text.lower()])
-                    else:
-                        np.append(words, self.word_embeddings["date"])
-                    np.append(pos, self.pos2index[tok._pos])
-                    np.append(shape, [self.shape2index[tok._shape]])
-        features.append(words)
-        features.append(pos)
-        features.append(shape)
-        return features
+
+                for i,tok in enumerate(sen.tokens):
+                    #sentence.append(np.array([i, self.pos2index[tok._pos], self.shape2index[tok._shape]]))
+                    #if tok._text in self.word_embeddings.vocab:
+                        #np.append(words, self.word_embeddings[tok._text.lower()])
+                    #else:
+                        #np.append(words, self.word_embeddings["date"])
+                    words.append(i)
+                    pos.append(self.pos2index[tok._pos])
+                    shape.append(self.shape2index[tok._shape])
+        return np.array([words, pos, shape])
 
     def encode_annotations(self, documents: List[Document]):
         """

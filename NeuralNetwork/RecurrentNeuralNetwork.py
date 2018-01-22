@@ -50,34 +50,17 @@ class RecurrentNeuralNetwork():
                                      mask_zero=True)(shape_input)
 
         merged_input = concatenate([word_embeddings, pos_embeddings, shape_embeddings], axis=-1)
-
-        out_classes = 2
-        print('Build Bi-RNN model...')
-        # Input definition
-        word_input = Input(shape=(100,), dtype='int32', name='word_input')
-
-        # Define layers
-        word_embeddings = Embedding(input_dim=vocab_size, output_dim=50, trainable=True, mask_zero=True)(word_input)
-
-        word_embeddings = Dropout(0.5, name='first_dropout')(word_embeddings)
-
-        bilstm = Bidirectional(LSTM(100, activation='tanh', return_sequences=True), name='bi-lstm')(word_embeddings)
-
-        lstm = LSTM(100, activation='tanh', name='lstm', return_sequences=True)(bilstm)
-
-        lstm = Dropout(0.5, name='second_dropout')(lstm)
-
-        output = TimeDistributed(Dense(out_classes, activation='softmax'))(lstm)
-
-        # Build and compile model
+        bilstm = Bidirectional(LSTM(units, activation='tanh', return_sequences=True), name='bi-lstm')(word_embeddings)
+        lstm = LSTM(units, activation='tanh', name='lstm', return_sequences=True)(bilstm)
+        lstm = Dropout(dropout_rate, name='second_dropout')(lstm)
+        output = TimeDistributed(Dense(out_shape, activation='softmax'))(lstm)
         model = Model(inputs=[word_input], outputs=output)
-
         model.compile(optimizer='adam',
                       loss='binary_crossentropy',
                       metrics=['accuracy'])
-
+        #return Recurrent(model)
         print(model.summary())
-        return Recurrent(model)
+        return model
 
     @classmethod
     def load(cls, filename):
